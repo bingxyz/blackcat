@@ -1,0 +1,17 @@
+{
+  "name": "blackcat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node run"
+  },
+  "author": "bing",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "node-telegram-bot-api": "^0.27.1",
+    "request": "^2.81.0"
+  }
+}
