@@ -1,8 +1,9 @@
 const request = require('request')
 const cheerio = require('cheerio')
 const TelegramBot = require("node-telegram-bot-api")
-const token = ''
+const token = require('./token').botToken
 const bot = new TelegramBot(token, {polling: true})
+
 var options = {
     url: 'http://www.t-cat.com.tw/Inquire/Trace.aspx',
     method: 'POST',
@@ -73,13 +74,22 @@ function isNumeric(mixedVar) {
 function isTrackNumber(trackNumber){
     return isNumeric(trackNumber) && trackNumber.length == 12 && trackNumber.charAt(0) == '9'
 }
+
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     var trackNumber = msg.text
     console.log(`from ${msg.from.username} say : ${trackNumber}`)
-
+    const options = {
+        // reply_to_message_id: msg.message_id,
+        reply_markup: JSON.stringify({
+            keyboard: [
+                [trackNumber]
+            ]
+        })
+    }
     if(isTrackNumber(trackNumber)){
-        bot.sendMessage(chatId, 'Please wait for moments...')
+        bot.sendMessage(chatId, 'Please wait for moments...', options)
+        // bot.sendMessage(chatId, '', options)
         console.log(`tell ${msg.from.username} : Please wait for moments...`)
         queryPackage(trackNumber).then((queryResult) => {
             bot.sendMessage(chatId, queryResult)
